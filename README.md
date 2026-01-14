@@ -10,3 +10,12 @@ UtilityHub-API is a backend service for managing and comparing utility offers
 
 ## Status
 🚧 Prototype v0 — in progress
+
+## Architecture
+
+The project follows a modular structure inspired by Domain-Driven Design (DDD).
+Each domain module is organized into:
+
+- Domain: core business logic and entities
+- Application: use cases and application services
+- Infrastructure: framework and external integrations
