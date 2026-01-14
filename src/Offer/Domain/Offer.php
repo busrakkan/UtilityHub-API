@@ -5,16 +5,33 @@ declare(strict_types=1);
 namespace App\Offer\Domain;
 
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'offers')]
 final class Offer
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'string', length: 36)]
     private string $id;
+
+    #[ORM\Column(length: 255)]
     private string $title;
+
+    #[ORM\Column(length: 255)]
     private string $providerName;
+
+    #[ORM\Column(length: 50)]
     private string $utilityType;
+
+    #[ORM\Column(type: 'float')]
     private float $pricePerMonth;
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isActive;
+
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
     public function __construct(
