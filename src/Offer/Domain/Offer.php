@@ -36,4 +36,40 @@ final class Offer
         $this->isActive = true;
         $this->createdAt = new DateTimeImmutable();
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getProviderName(): string
+    {
+        return $this->providerName;
+    }
+
+    public function getUtilityType(): string
+    {
+        return $this->utilityType;
+    }
+
+    public function getPricePerMonth(): float
+    {
+        return $this->pricePerMonth;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
 }
