@@ -35,4 +35,14 @@ class OfferRepository implements OfferRepositoryInterface
         $this->em->remove($offer);
         $this->em->flush();
     }
+
+    public function findAllActive(): array
+    {
+        return $this->em->getRepository(Offer::class)
+            ->createQueryBuilder('o')
+            ->where('o.is_active = :active')
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getResult();
+    }
 }
