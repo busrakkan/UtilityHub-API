@@ -9,7 +9,8 @@ services:
     App\:
         resource: '../src/'
 
-    # Bind the OfferRepositoryInterface to the Doctrine implementation
     App\Offer\Domain\OfferRepositoryInterface:
-        alias: App\Offer\Infrastructure\Doctrine\OfferRepository
-        public: false
+        alias: App\Offer\Domain\Infrastructure\Doctrine\OfferRepository
+        public: true
+
+

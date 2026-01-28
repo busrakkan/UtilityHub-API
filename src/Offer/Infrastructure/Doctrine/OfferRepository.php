@@ -1,48 +1,53 @@
 <?php
-namespace App\Offer\Infrastructure\Doctrine;
+namespace App\Offer\Domain\Infrastructure\Doctrine;
 
-use App\Offer\Domain\Offer;
 use App\Offer\Domain\OfferRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Connection;
 
-class OfferRepository implements OfferRepositoryInterface
+abstract class OfferRepository implements OfferRepositoryInterface
 {
-    private EntityManagerInterface $em;
+    private Connection $conn;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(Connection $conn)
     {
-        $this->em = $em;
-    }
-
-    public function save(Offer $offer): void
-    {
-        $this->em->persist($offer);
-        $this->em->flush();
+        $this->conn = $conn;
     }
 
     public function findById(string $id): ?Offer
     {
-        return $this->em->getRepository(Offer::class)->find($id);
+        $data = $this->conn->fetchAssociative('SELECT * FROM offers WHERE id = ?', [$id]);
+
+        if (!$data) {
+            return null;
+        }
+
+        // Map database row to Offer object
+        return new Offer(
+            $data['id'],
+            $data['title'],
+            $data['providerName'],
+            $data['utilityType'],
+            (float) $data['pricePerMonth']
+        );
     }
 
-    public function findAll(): array
-    {
-        return $this->em->getRepository(Offer::class)->findAll();
-    }
-
-    public function delete(Offer $offer): void
-    {
-        $this->em->remove($offer);
-        $this->em->flush();
-    }
 
     public function findAllActive(): array
     {
-        return $this->em->getRepository(Offer::class)
-            ->createQueryBuilder('o')
-            ->where('o.is_active = :active')
-            ->setParameter('active', true)
-            ->getQuery()
-            ->getResult();
+        $rows = $this->conn->fetchAllAssociative('SELECT * FROM offers WHERE is_active = 1');
+
+        $offers = [];
+        foreach ($rows as $data) {
+            $offers[] = new Offer(
+                $data['id'],
+                $data['title'],
+                $data['providerName'],
+                $data['utilityType'],
+                (float) $data['pricePerMonth']
+            );
+        }
+
+        return $offers;
     }
+
 }
