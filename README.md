@@ -9,7 +9,7 @@ UtilityHub-API is a backend service for managing and comparing utility offers
 - Doctrine ORM
 
 ## Status
-🚧 Prototype v0 — in progress
+Prototype v0 — in progress
 
 ## Architecture
 
